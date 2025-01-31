@@ -20,7 +20,7 @@ public class Category implements Serializable {
     private Long id;
     private String name;
 
-    @ManyToMany(mappedBy = "category")
+    @ManyToMany(mappedBy = "categories")
     private final List<Product> products = new ArrayList<>();
 
     public Category(Long id, String name) {

@@ -6,6 +6,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Product implements Serializable {
@@ -27,7 +28,7 @@ public class Product implements Serializable {
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
-    private HashSet<Category> category;
+    private final Set<Category> categories = new HashSet<>();
 
     public Product(Long id, String name, String description, Double price, String imgUrl) {
         this.id = id;
@@ -77,12 +78,8 @@ public class Product implements Serializable {
         this.imgUrl = imgUrl;
     }
 
-    public HashSet<Category> getCategory() {
-        return category;
-    }
-
-    public void setCategory(HashSet<Category> category) {
-        this.category = category;
+    public Set<Category> getCategories() {
+        return categories;
     }
 
     @Override
