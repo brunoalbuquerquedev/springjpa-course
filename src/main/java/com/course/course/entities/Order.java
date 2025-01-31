@@ -1,5 +1,6 @@
 package com.course.course.entities;
 
+import com.course.course.entities.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
@@ -21,6 +22,7 @@ public class Order implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Instant moment;
+    private OrderStatus orderStatus;
 
     @JsonIgnore
     @ManyToOne
@@ -30,10 +32,11 @@ public class Order implements Serializable {
     @OneToMany(mappedBy = "id.order")
     private final Set<OrderItem> items = new HashSet<>();
 
-    public Order(Long id, Instant moment, User client) {
+    public Order(Long id, Instant moment, User client, OrderStatus orderStatus) {
         this.id = id;
         this.moment = moment;
         this.client = client;
+        setOrdersStatus(orderStatus);
     }
 
     public Long getId() {
@@ -58,6 +61,16 @@ public class Order implements Serializable {
 
     public void setClient(User client) {
         this.client = client;
+    }
+
+    public OrderStatus getOrdersStatus() {
+        return OrderStatus.valueOf(String.valueOf(orderStatus));
+    }
+
+    public void setOrdersStatus(OrderStatus orderStatus) {
+        if (orderStatus == null)
+            throw new RuntimeException("Null order status.");
+        this.orderStatus = orderStatus;
     }
 
     @Override
