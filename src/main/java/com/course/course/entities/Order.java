@@ -1,7 +1,9 @@
 package com.course.course.entities;
 
 import com.course.course.entities.enums.OrderStatus;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.persistence.*;
 
 import java.io.Serial;
@@ -11,6 +13,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+@JsonPropertyOrder({ "id", "moment", "orderStatus", "client" })
 @Entity
 @Table(name = "tb_order")
 public class Order implements Serializable {
@@ -21,18 +24,17 @@ public class Order implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-mm-dd'T'HH:mm:ss'Z'", timezone = "GMT")
     private Instant moment;
     private OrderStatus orderStatus;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "client_id")
     private User client;
 
     @OneToMany(mappedBy = "id.order")
     private final Set<OrderItem> items = new HashSet<>();
-
-//    private final Set<Payment> payments = new HashSet<>();
 
     public Order() {
     }
@@ -80,6 +82,10 @@ public class Order implements Serializable {
 
     public Double totalOrders() {
         return null;
+    }
+
+    public Set<OrderItem> getItems()  {
+        return items;
     }
 
     @Override
