@@ -21,6 +21,9 @@ public class Payment implements Serializable {
     private Long id;
     private Instant moment;
 
+    public Payment() {
+    }
+
     public Payment(Long id, Instant moment) {
         this.id = id;
         this.moment = moment;

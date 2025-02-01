@@ -32,6 +32,11 @@ public class Order implements Serializable {
     @OneToMany(mappedBy = "id.order")
     private final Set<OrderItem> items = new HashSet<>();
 
+//    private final Set<Payment> payments = new HashSet<>();
+
+    public Order() {
+    }
+
     public Order(Long id, Instant moment, User client, OrderStatus orderStatus) {
         this.id = id;
         this.moment = moment;
@@ -69,8 +74,12 @@ public class Order implements Serializable {
 
     public void setOrdersStatus(OrderStatus orderStatus) {
         if (orderStatus == null)
-            throw new RuntimeException("Null order status.");
+            throw new NullPointerException("Null order status.");
         this.orderStatus = orderStatus;
+    }
+
+    public Double totalOrders() {
+        return null;
     }
 
     @Override

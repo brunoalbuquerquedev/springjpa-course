@@ -10,10 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 @RestController
 @RequestMapping(value = "/orders")
 public class OrderResource {
+
+    private final Logger logger = Logger.getLogger(this.getClass().getName());
 
     @Autowired
     private OrderService service;
@@ -25,6 +28,11 @@ public class OrderResource {
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<Order> findById(@PathVariable Long id) {
-        return ResponseEntity.ok().body(service.findById(id));
+        try {
+            return ResponseEntity.ok().body(service.findById(id));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

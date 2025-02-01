@@ -17,7 +17,6 @@ public class OrderItem implements Serializable {
 
     @EmbeddedId
     private final OrderItemPK id = new OrderItemPK();
-
     private Double price;
     private Integer quantity;
 
@@ -63,6 +62,10 @@ public class OrderItem implements Serializable {
 
     public void setProduct(Product product) {
         id.setProduct(product);
+    }
+
+    public Double subTotal() {
+        return null;
     }
 
     @Override
