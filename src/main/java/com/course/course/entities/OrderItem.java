@@ -2,6 +2,7 @@ package com.course.course.entities;
 
 import com.course.course.entities.pk.OrderItemPK;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.persistence.*;
 
 import java.io.Serial;
@@ -9,6 +10,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
+@JsonPropertyOrder({ "product", "price", "quantity", "subTotal" })
 @Table(name = "tb_order_item")
 public class OrderItem implements Serializable {
 
@@ -64,8 +66,8 @@ public class OrderItem implements Serializable {
         id.setProduct(product);
     }
 
-    public Double subTotal() {
-        return null;
+    public Double getSubTotal() {
+        return price * quantity;
     }
 
     @Override

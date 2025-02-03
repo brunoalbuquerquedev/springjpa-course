@@ -49,9 +49,9 @@ public class TestConfig implements CommandLineRunner {
         userRepository.saveAll(Arrays.asList(u1, u2, u3));
 
         Order o1 = new Order(null, Instant.parse("2019-06-20T19:53:07Z"), u1, OrderStatus.PAID);
-        Order o2 = new Order(null, Instant.parse("2019-07-21T03:42:10Z"), u2, OrderStatus.CANCELED);
-        Order o3 = new Order(null, Instant.parse("2019-07-22T15:21:22Z"), u1, OrderStatus.DELIVERED);
-        Order o4 = new Order(null, Instant.parse("2019-08-22T14:29:01Z"), u3, OrderStatus.SHIPPED);
+        Order o2 = new Order(null, Instant.parse("2019-07-21T03:42:10Z"), u2, OrderStatus.WAITING_PAYMENT);
+        Order o3 = new Order(null, Instant.parse("2019-07-22T15:21:22Z"), u1, OrderStatus.WAITING_PAYMENT);
+        Order o4 = new Order(null, Instant.parse("2019-08-22T14:29:01Z"), u3, OrderStatus.CANCELED);
 
         orderRepository.saveAll(Arrays.asList(o1, o2, o3, o4));
 
@@ -77,8 +77,9 @@ public class TestConfig implements CommandLineRunner {
 
         orderItemRepository.saveAll(Arrays.asList(oi1, oi2, oi3, oi4));
 
-        Payment pay1 = new Payment(null, Instant.parse("2019-06-23T13:02:56Z"));
+        Payment pay1 = new Payment(null, Instant.parse("2019-06-23T13:02:56Z"), o1);
 
-        paymentRepository.saveAll(List.of(pay1));
+        o1.setPayment(pay1);
+        orderRepository.save(o1);
     }
 }

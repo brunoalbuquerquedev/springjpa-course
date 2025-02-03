@@ -13,8 +13,8 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-@JsonPropertyOrder({ "id", "moment", "orderStatus", "client" })
 @Entity
+@JsonPropertyOrder({ "id", "moment", "client", "orderStatus" })
 @Table(name = "tb_order")
 public class Order implements Serializable {
 
@@ -35,6 +35,9 @@ public class Order implements Serializable {
 
     @OneToMany(mappedBy = "id.order")
     private final Set<OrderItem> items = new HashSet<>();
+
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+    private Payment payment;
 
     public Order() {
     }
@@ -80,12 +83,22 @@ public class Order implements Serializable {
         this.orderStatus = orderStatus;
     }
 
-    public Double totalOrders() {
-        return null;
-    }
-
     public Set<OrderItem> getItems()  {
         return items;
+    }
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
+    }
+
+    public Double getTotal() {
+        return items.stream()
+                .mapToDouble(OrderItem::getSubTotal)
+                .sum();
     }
 
     @Override
@@ -101,3 +114,4 @@ public class Order implements Serializable {
         return Objects.hashCode(getId());
     }
 }
+

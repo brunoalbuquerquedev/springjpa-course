@@ -1,9 +1,8 @@
 package com.course.course.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import jakarta.persistence.*;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -11,6 +10,8 @@ import java.time.Instant;
 import java.util.Objects;
 
 @Entity
+@JsonPropertyOrder({ "id", "moment", "order" })
+@Table(name = "tb_payment")
 public class Payment implements Serializable {
 
     @Serial
@@ -21,12 +22,17 @@ public class Payment implements Serializable {
     private Long id;
     private Instant moment;
 
+    @OneToOne
+    @MapsId
+    private Order order;
+
     public Payment() {
     }
 
-    public Payment(Long id, Instant moment) {
+    public Payment(Long id, Instant moment, Order order) {
         this.id = id;
         this.moment = moment;
+        this.order = order;
     }
 
     public Long getId() {
@@ -43,6 +49,15 @@ public class Payment implements Serializable {
 
     public void setMoment(Instant moment) {
         this.moment = moment;
+    }
+
+    @JsonIgnore
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
     @Override

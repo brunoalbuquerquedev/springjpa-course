@@ -1,6 +1,7 @@
 package com.course.course.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.persistence.*;
 
 import java.io.Serial;
@@ -11,6 +12,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
+@JsonPropertyOrder({ "id", "name", "description", "price", "imgUrl", "categories", "items" })
 public class Product implements Serializable {
 
     @Serial
