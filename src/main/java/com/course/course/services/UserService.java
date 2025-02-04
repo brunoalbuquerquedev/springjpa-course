@@ -2,7 +2,6 @@ package com.course.course.services;
 
 import com.course.course.entities.User;
 import com.course.course.repositories.UserRepository;
-import com.course.course.resources.exceptions.ResourceExceptionHandler;
 import com.course.course.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +29,8 @@ public class UserService {
     }
 
     public void delete(Long id) {
+        if (!repository.existsById(id))
+            throw new ResourceNotFoundException(null);
         repository.deleteById(id);
     }
 

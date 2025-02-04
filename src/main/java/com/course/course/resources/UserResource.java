@@ -2,7 +2,10 @@ package com.course.course.resources;
 
 import com.course.course.entities.User;
 import com.course.course.services.UserService;
+import com.course.course.services.exceptions.DbException;
+import com.course.course.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -39,8 +42,14 @@ public class UserResource {
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        service.delete(id);
-        return ResponseEntity.noContent().build();
+        try {
+            service.delete(id);
+            return ResponseEntity.noContent().build();
+        } catch (DataIntegrityViolationException e) {
+            throw new DbException();
+        } catch (ResourceNotFoundException e) {
+            throw new ResourceNotFoundException(id);
+        }
     }
 
     @PutMapping(value = "/{id}")

@@ -1,5 +1,6 @@
 package com.course.course.resources.exceptions;
 
+import com.course.course.services.exceptions.DbException;
 import com.course.course.services.exceptions.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,14 @@ public class ResourceExceptionHandler extends RuntimeException implements Serial
     public ResponseEntity<StandardError> resourceNotFound(ResourceNotFoundException e, HttpServletRequest r) {
         String error = "Resource not found";
         HttpStatus status = HttpStatus.NOT_FOUND;
+        StandardError se = new StandardError(Instant.now(), status.value(), error, e.getMessage(), r.getRequestURI());
+        return ResponseEntity.status(status).body(se);
+    }
+
+    @ExceptionHandler(DbException.class)
+    public ResponseEntity<StandardError> db(DbException e, HttpServletRequest r) {
+        String error = "Bad request";
+        HttpStatus status = HttpStatus.BAD_REQUEST;
         StandardError se = new StandardError(Instant.now(), status.value(), error, e.getMessage(), r.getRequestURI());
         return ResponseEntity.status(status).body(se);
     }
