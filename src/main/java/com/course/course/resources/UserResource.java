@@ -4,6 +4,7 @@ import com.course.course.entities.User;
 import com.course.course.services.UserService;
 import com.course.course.services.exceptions.DbException;
 import com.course.course.services.exceptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
@@ -54,6 +55,11 @@ public class UserResource {
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<User> update(@PathVariable Long id, @RequestBody User obj) {
-        return ResponseEntity.ok().body(service.update(id, obj));
+        try {
+            if (obj == null) throw new RuntimeException();
+            return ResponseEntity.ok().body(service.update(id, obj));
+        } catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException(id);
+        }
     }
 }
